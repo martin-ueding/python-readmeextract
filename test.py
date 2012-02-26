@@ -1,36 +1,22 @@
-from epydoc.markup import epytext
-from epydoc import docparser
-import subprocess
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
-__doc__ = """
-Test::
+# Copyright © 2012 Martin Ueding <dev@martin-ueding.de>
 
-    Indented paragraph
+"""
+Extracts the reStructuredText formatted module documentation block from the
+given Python module.
 
-C{code} and B{bold}
+This can then be piped into a ``README.rst`` for instance.
 """
 
-print __doc__
+import sys
 
-def foo():
-    pass
+__docformat__ = "restructuredtext en"
+
+def main():
+    mod = __import__(sys.argv[1])
+    print mod.__doc__
 
 if __name__ == '__main__':
-    filename = "test.py"
-
-    valuedoc = docparser.parse_docs(filename)
-
-    print valuedoc
-    print "---"
-    print valuedoc.summary
-    print "---"
-
-if False:
-
-    dom = epytext.parse_docstring(valuedoc.docstring, [])
-    latex = dom.to_latex(None)
-
-    proc = subprocess.Popen(["pandoc", "-r", "latex", "-w", "markdown"], stdin=subprocess.PIPE)
-    proc.stdin.write(latex)
-    proc.stdin.close()
-    proc.communicate()
+    main()
